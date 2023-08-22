@@ -21,6 +21,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+// import {
+//   DropdownMenu,
+//   DropdownMenuCheckboxItem,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger
+// } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
@@ -50,6 +58,13 @@ interface ProductFormProps {
   sizes: Size[];
 };
 
+// interface ISelectProps {
+//   values: {
+//     key: string;
+//     value: string;
+//   }[];
+// }
+
 export const ProductForm: React.FC<ProductFormProps> = ({
   initialData,
   categories,
@@ -59,8 +74,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const params = useParams();
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  // const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+
+  // const isOptionSelected = (value: string): boolean => {
+  //   return selectedItems.includes(value) ? true : false;
+  // };
 
   const title = initialData ? 'Edit product' : 'Create product';
   const description = initialData ? 'Edit a product.' : 'Add a new product';
@@ -85,6 +106,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues
   });
+
+  // const handleSelectChange = (value: string) => {
+  //   if (!selectedItems.includes(value)) {
+  //     setSelectedItems((prev) => [...prev, value]);
+  //   } else {
+  //     const referencedArray = [...selectedItems];
+  //     const indexOfItemToBeRemoved = referencedArray.indexOf(value);
+  //     referencedArray.splice(indexOfItemToBeRemoved, 1);
+  //     setSelectedItems(referencedArray);
+  //   }
+  // };
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
@@ -119,6 +151,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     }
   }
 
+  // console.log(initialData)
+  // console.log(selectedItems);
+  
   return (
     <>
     <AlertModal 
@@ -136,13 +171,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             size="sm"
             onClick={() => setOpen(true)}
           >
-            <Trash className="h-4 w-4" />
+            <Trash className="w-4 h-4" />
           </Button>
         )}
       </div>
       <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
           <FormField
             control={form.control}
             name="images"
@@ -161,7 +196,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               </FormItem>
             )}
           />
-          <div className="md:grid md:grid-cols-3 gap-8">
+          <div className="gap-8 md:grid md:grid-cols-3">
             <FormField
               control={form.control}
               name="name"
@@ -258,7 +293,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               control={form.control}
               name="isFeatured"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className="flex flex-row items-start p-4 space-x-3 space-y-0 border rounded-md">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -281,7 +316,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               control={form.control}
               name="isArchived"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem className="flex flex-row items-start p-4 space-x-3 space-y-0 border rounded-md">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -309,3 +344,29 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     </>
   );
 };
+
+
+{/* <DropdownMenu>
+<DropdownMenuTrigger asChild>
+  <Button variant="outline" className="flex font-bold w-[22.5rem]">
+    <span>Select Values</span>
+  </Button>
+</DropdownMenuTrigger>
+<DropdownMenuContent className="w-56" onCloseAutoFocus={(e) => e.preventDefault()}>
+  <DropdownMenuLabel>Color</DropdownMenuLabel>
+  <DropdownMenuSeparator />
+  {sizes.map((value) => {
+    return (
+      <DropdownMenuCheckboxItem
+        onSelect={(e) => e.preventDefault()}
+        key={value.id}
+        onChange={field.onChange}
+        checked={isOptionSelected(value.value)}
+        onCheckedChange={() => handleSelectChange(value.value)}
+      >
+        {value.value}
+      </DropdownMenuCheckboxItem>
+    );
+  })}
+</DropdownMenuContent>
+</DropdownMenu> */}

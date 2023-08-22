@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
+    const { name, price, quantity, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -61,6 +61,7 @@ export async function POST(
       data: {
         name,
         price,
+        quantity,
         isFeatured,
         isArchived,
         categoryId,
@@ -84,6 +85,13 @@ export async function POST(
   }
 };
 
+/**
+ * Retrieves a list of products based on the provided parameters.
+ *
+ * @param {Request} req - The HTTP request object.
+ * @param {{ params: { storeId: string } }} params - The parameters object containing the store ID.
+ * @return A promise that resolves to a NextResponse object containing the list of products.
+*/
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } },

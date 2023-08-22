@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/popover"
 import { useStoreModal } from "@/hooks/use-store-modal"
 import { useParams, useRouter } from "next/navigation"
+import axios from "axios"
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
@@ -38,13 +39,18 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
     value: item.id
   }));
 
+  console.log("All store", formattedItems);
+  
   const currentStore = formattedItems.find((item) => item.value === params.storeId);
 
+  console.log("current store", currentStore);
+  
   const [open, setOpen] = React.useState(false)
 
-  const onStoreSelect = (store: { value: string, label: string }) => {
+  const onStoreSelect = async (store: { value: string, label: string }) => {
     setOpen(false);
     router.push(`/${store.value}`);
+    console.log(store.value);
   };
 
   return (
@@ -58,9 +64,9 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
           aria-label="Select a store"
           className={cn("w-[200px] justify-between", className)}
         >
-          <Store className="mr-2 h-4 w-4" />
+          <Store className="w-4 h-4 mr-2" />
           {currentStore?.label}
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="w-4 h-4 ml-auto opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -75,7 +81,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                   onSelect={() => onStoreSelect(store)}
                   className="text-sm"
                 >
-                  <Store className="mr-2 h-4 w-4" />
+                  <Store className="w-4 h-4 mr-2" />
                   {store.label}
                   <Check
                     className={cn(
@@ -98,7 +104,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                   storeModal.onOpen()
                 }}
               >
-                <PlusCircle className="mr-2 h-5 w-5" />
+                <PlusCircle className="w-5 h-5 mr-2" />
                 Create Store
               </CommandItem>
             </CommandGroup>
